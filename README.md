@@ -5,9 +5,9 @@ Projeto Desenvolve
 
 Alunos: 
 
-Kennedy Darlan Oliveira Duarte – PDITA 065
-Vinicius Kener Souza - PDITA 260
-Larissa Gabrielly dos S de Assis
-Rafael Toledo Silva
-Gabriel Ribeiro Rocha
+Kennedy Darlan Oliveira Duarte – PDITA 065; 
+Vinicius Kener Souza - PDITA 260; 
+Larissa Gabrielly dos S de Assis; 
+Rafael Toledo Silva; 
+Gabriel Ribeiro Rocha. 
 
