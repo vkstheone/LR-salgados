@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Comentário</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .add-feedback {
+            padding: 20px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        .add-feedback h2 {
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        form label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+        }
+
+        form input, form select, form textarea, form button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        form button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        .cancel-button {
+            background-color: #dc3545;
+        }
+
+        .cancel-button:hover {
+            background-color: #b02a37;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-top">
+            <img src="assets/images/logo.jpg" alt="Logo">
+            <h1>L & R Produtos Caseiros</h1>
+        </div>
+    </header>
+
+    <main>
+        <section class="add-feedback">
+            <div class="container">
+                <h2>Adicione seu Feedback</h2>
+
+                <form id="feedback-form" action="/submit-feedback" method="POST">
+                    <!-- Nome -->
+                    <label for="name">Nome:</label>
+                    <input type="text" id="name" name="name" placeholder="Digite seu nome" required>
+
+                    <!-- Avaliação -->
+                    <label for="rating">Avaliação:</label>
+                    <select id="rating" name="rating" required>
+                        <option value="">Selecione uma nota</option>
+                        <option value="1">1 - Muito ruim</option>
+                        <option value="2">2 - Ruim</option>
+                        <option value="3">3 - Médio</option>
+                        <option value="4">4 - Bom</option>
+                        <option value="5">5 - Excelente</option>
+                    </select>
+
+                    <!-- Comentário -->
+                    <label for="comment">Comentário:</label>
+                    <textarea id="comment" name="comment" rows="5" placeholder="Escreva seu comentário aqui..." required></textarea>
+
+                    <!-- Botões -->
+                    <button type="submit">Enviar Comentário</button>
+                    <button type="button" class="cancel-button" onclick="location.href='index.html'">Cancelar</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 L & R Produtos Caseiros. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
