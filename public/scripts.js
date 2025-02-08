@@ -1,4 +1,3 @@
-// Função para carregar feedbacks
 async function loadFeedbacks() {
     try {
         const response = await fetch('/feedbacks'); // Rota do backend para obter os feedbacks
@@ -25,14 +24,18 @@ async function loadFeedbacks() {
             feedbackItem.innerHTML = `
                 <h3>${feedback.name}</h3>
                 <p class="rating">${'★'.repeat(feedback.rating)}${'☆'.repeat(5 - feedback.rating)}</p>
-                <p>${feedback.comment}</p>
-                <button class="delete-btn" data-id="${feedback.id}">🗑️</button>
+                <p>'${feedback.comment}</p>
+                <button class="delete-btn" data-id="${feedback.id}">Excluir Comentário</button>
             `;
-
+            
             testimonialsList.appendChild(feedbackItem);
         });
     } catch (error) {
-        console.error("Erro ao carregar feedbacks:", error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro!',
+            text: `Erro ao carregar feedbacks: ${error.message}`
+        });
     }
 }
 
@@ -52,8 +55,17 @@ async function deleteFeedback(feedbackId) {
 
         // Recarrega os feedbacks após a exclusão
         loadFeedbacks();
+        Swal.fire({
+            icon: 'success',
+            title: 'Feedback Excluído!',
+            text: 'O feedback foi excluído com sucesso.'
+        });
     } catch (error) {
-        console.error("Erro ao excluir feedback:", error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro!',
+            text: `Erro ao excluir feedback: ${error.message}`
+        });
     }
 }
 
@@ -62,9 +74,19 @@ document.addEventListener('click', (event) => {
     if (event.target.classList.contains('delete-btn')) {
         const feedbackId = event.target.getAttribute('data-id');
 
-        if (confirm('Tem certeza que deseja excluir este feedback?')) {
-            deleteFeedback(feedbackId); // Chama a função para excluir o feedback
-        }
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: 'Você deseja excluir este feedback?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sim, excluir!',
+            confirmButtonColor: '#ff9c5b',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteFeedback(feedbackId); // Chama a função para excluir o feedback
+            }
+        });
     }
 });
 
@@ -73,3 +95,46 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM completamente carregado.");
     loadFeedbacks(); // Carrega os feedbacks ao iniciar
 });
+
+// Função para carregar feedbacks
+async function loadFeedbacks() {
+    try {
+        const response = await fetch('/feedbacks'); // Rota do backend para obter os feedbacks
+        if (!response.ok) {
+            throw new Error('Erro ao buscar feedbacks do servidor.');
+        }
+
+        const feedbacks = await response.json();
+        console.log('Feedbacks recebidos:', feedbacks); // Adicionando um log para verificar os dados
+
+        const testimonialsList = document.querySelector('.testimonials-list');
+        if (!testimonialsList) {
+            console.error("Elemento .testimonials-list não encontrado no DOM.");
+            return;
+        }
+
+        // Limpa o conteúdo existente
+        testimonialsList.innerHTML = '';
+
+        // Adiciona os feedbacks dinamicamente
+        feedbacks.forEach(feedback => {
+            const feedbackItem = document.createElement('div');
+            feedbackItem.classList.add('testimonial-item');
+
+            feedbackItem.innerHTML = `
+                <h3>${feedback.name}</h3>
+                <p class="rating">${'★'.repeat(feedback.rating)}${'☆'.repeat(5 - feedback.rating)}</p>
+                <p>${feedback.comment}</p>
+                <button class="delete-btn" data-id="${feedback.id}">Excluir Comentário</button>
+            `;
+            
+            testimonialsList.appendChild(feedbackItem);
+        });
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro!',
+            text: `Erro ao carregar feedbacks: ${error.message}`
+        });
+    }
+}

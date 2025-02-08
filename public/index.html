@@ -6,6 +6,7 @@
     <title>L & R Produtos Caseiros</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="./assets/images/favicon.png" type="image/png">
 </head>
 <body>
 
@@ -232,52 +233,21 @@
         </div>
     </section>
 
-    <!-- Comentários estáticos (Versão antiga)
     <section id="testimonials" class="testimonials">
-        <div class="container-clientes">
+        <div class="button-fd-container-clientes">
             <h2>Opiniões dos Clientes</h2>
-            <div class="testimonial-item">
-                <p>"Os melhores salgados que já provei! Atendimento excelente e produtos de alta qualidade."</p>
-                <h3>- Maria Silva</h3>
-            </div>
-            <div class="testimonial-item">
-                <p>"Recomendo a todos! A coxinha é simplesmente sensacional."</p>
-                <h3>- João Santos</h3>
-            </div>
-            <div class="testimonial-item">
-                <p>"As pizzas são incríveis, com massa fina e recheio generoso. Os doces também são uma tentação à parte. Apenas gostaria que o tempo de espera fosse um pouco menor, mas vale a pena!."</p>
-                <h3>- Carlos Oliveira</h3>
-            </div>
-            <div class="testimonial-item">
-                <p>"Os brigadeiros são os melhores que já provei! Os salgados são crocantes e muito gostosos. O atendimento é sempre muito simpático e prestativo."</p>
-                <h3>- Paulo Antonio de Campos</h3>
-            </div>
-            <div class="testimonial-item">
-                <p>"Os doces são maravilhosos, especialmente o bolo de  vulcão cenoura com cobertura de chocolate. Os salgados são muito bem feitos e saborosos. Recomendo!"</p>
-                <h3>- Rodrigo Martins</h3>
-            </div>
-        </div>
-    </section>-->
-
-
-
-    
-
-    <section id="testimonials" class="testimonials">
-        <div class="container">
-            <h2>Feedbacks dos Clientes</h2>
-             <!-- Botão para adicionar novo feedback -->
-             <button id="add-feedback" onclick="location.href='feedback.html'">Adicionar Avaliação</button>
-            <!-- Lista de comentários dinâmicos -->
             <div class="testimonials-list">
                 <!-- Feedbacks serão inseridos dinamicamente aqui -->
             </div>
+            <div class="button-fd">
+                 <a>
+                    <button id="add-feedback" onclick="location.href='feedback.html'" class="feedback-button">Envie seu feedback</button>
+                 </a>
+            </div>
         </div>
+
+        <div class="end"></div>
     </section>
-    
-    
-    
-    
 
 
     <section id="contact" class="contact">
@@ -307,8 +277,7 @@
             <p>&copy; L & R Produtos Caseiros. Todos os direitos reservados.</p>
         </div>
     </footer>
-    
-
-    <script src="scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="scripts.js" defer></script>
 </body>
 </html>
