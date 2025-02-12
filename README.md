@@ -4,8 +4,8 @@
 
  2- No terminal use o comando 'npm install' para instalar as dependências.
 
- 3- Use 'cd' + o caminho da pasta onde está o arquivo server.js para ir ao diretório do projeto.
+ 3- Use 'cd back-end' 
 
  4- Use o comando 'npm run dev' para iniciar o servidor.
 
- 5- Acesse http://localhost:3000/ pelo navegador e terá acesso ao site rodando conectado ao servidor.
+ 5- Acesse http://localhost:3000/ pelo navegador e terá acesso ao site rodando conectado ao servidor.cd back
