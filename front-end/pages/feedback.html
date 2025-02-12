@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Comentário</title>
+    <link rel="stylesheet" href="../assets/styles/style.css">
+    <link rel="stylesheet" href="../assets/styles/feedback.css">
+    <link rel="icon" href="./assets/images/favicon.png" type="image/png">
+</head>
+<body>
+    <header>
+        <div class="header-top">
+            <img src="../assets/images/logo.jpg" alt="Logo"> 
+            <h1>L & R Produtos Caseiros</h1>
+        </div>
+    </header>
+
+    <main>
+        <section class="add-feedback">
+            <div class="glassmorphism">
+                <div class="container">
+                    <h2>Adicione seu Feedback</h2>
+    
+                    <form id="feedback-form" action="http://localhost:3000/submit-feedback" method="POST">
+
+                        <!-- Nome -->
+                        <label for="name">Nome:</label id="name">
+                            <input type="text" id="name" name="name" placeholder="Digite seu nome" required>
+                            <!--- Email: -->
+                            <label for="comment">Email: </label>
+                            <input type="email" id="email" name="email">
+                            
+                        <!-- Avaliação -->
+                        <label for="rating">Avaliação:</label>
+                        <select id="rating" name="rating" required>
+                            <option value="">Selecione uma nota </option>
+                            <option value="5">5 - Excelente &#10025;&#10025;&#10025;&#10025;&#10025;</option>
+                            <option value="4">4 - Bom &#10025;&#10025;&#10025;&#10025;</option>
+                            <option value="3">3 - Médio &#10025;&#10025;&#10025;</option>
+                            <option value="2">2 - Ruim &#10025;&#10025;</option>
+                            <option value="1">1 - Muito ruim &#10025;</option> 
+                        </select>
+                        
+                        
+    
+                        <!-- Comentário -->
+                        <label for="comment">Comentário:</label>
+                        <textarea id="comment" name="comment" rows="5" placeholder="Escreva seu comentário aqui..." required></textarea>
+    
+                        <!-- Botões -->
+                        <button type="submit" alt="Enviar Comentário">	&#171; Enviar Comentário &#187;</button>
+                        <button type="button" alt="Cancelar" class="cancel-button" onclick="location.href='index.html'">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 L & R Produtos Caseiros. Todos os direitos reservados.</p>
+    </footer>
+    <script src="./alert.js"></script>
+</body>
+</html>
