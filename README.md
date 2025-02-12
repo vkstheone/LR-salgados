@@ -2,9 +2,9 @@
 
  1- Certifique-se de ter o Node.js instalado na máquina.
 
- 2- No terminal use o comando 'npm install' para instalar as dependências.
+ 2- Use 'cd back-end' 
 
- 3- Use 'cd back-end' 
+ 3- No terminal use o comando 'npm install' para instalar as dependências.
 
  4- Use o comando 'npm run dev' para iniciar o servidor.
 
