@@ -29,14 +29,14 @@ const db = new sqlite3.Database(dbPath, (err) => {
     }
 });
 
-const createTableQuery = `
+const createTableQuery = 
 CREATE TABLE IF NOT EXISTS feedbacks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     email TEXT NOT NULL,
     rating INTEGER NOT NULL,
     comment TEXT NOT NULL
-);`;
+);;
 
 db.run(createTableQuery, (err) => {
     if (err) {
@@ -52,9 +52,9 @@ app.post('/submit-feedback', (req, res) => {
         return res.status(400).send('Todos os campos são obrigatórios.');
     }
 
-    const insertQuery = `
+    const insertQuery = 
 INSERT INTO feedbacks (name, email, rating, comment)
-VALUES (?, ?, ?, ?);`;
+VALUES (?, ?, ?, ?);;
 
     db.run(insertQuery, [name, email, rating, comment], (err) => {
         if (err) {
@@ -67,9 +67,9 @@ VALUES (?, ?, ?, ?);`;
 });
 
 app.get('/feedbacks', (req, res) => {
-    const selectQuery = `
+    const selectQuery = 
 SELECT * FROM feedbacks
-ORDER BY id DESC;`;
+ORDER BY id DESC;;
 
     db.all(selectQuery, [], (err, rows) => {
         if (err) {
@@ -88,7 +88,7 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
+    console.log(Servidor rodando em http://localhost:${PORT});
 });
 app.delete('/feedbacks/:id', (req, res) => {
     const feedbackId = req.params.id;
@@ -98,9 +98,19 @@ app.delete('/feedbacks/:id', (req, res) => {
         return res.status(400).json({ message: 'Email é obrigatório para excluir o comentário.' });
     }
 
-    const sql = 'DELETE FROM feedbacks WHERE id = ? AND email = ?';
+    let sql, params;
 
-    db.run(sql, [feedbackId, userEmail], function (err) {
+    if (userEmail === ADMIN_EMAIL) {
+        // Se o email for o de administrador, excluir qualquer comentário pelo ID
+        sql = 'DELETE FROM feedbacks WHERE id = ?';
+        params = [feedbackId];
+    } else {
+        // Caso contrário, só excluir se o email coincidir
+        sql = 'DELETE FROM feedbacks WHERE id = ? AND email = ?';
+        params = [feedbackId, userEmail];
+    }
+
+    db.run(sql, params, function (err) {
         if (err) {
             console.error('Erro ao excluir feedback:', err.message);
             return res.status(500).json({ message: 'Erro ao excluir feedback.' });
@@ -113,4 +123,4 @@ app.delete('/feedbacks/:id', (req, res) => {
         res.json({ message: 'Comentário excluído com sucesso!' });
     });
 });
-
+O ChatGPT disse:
