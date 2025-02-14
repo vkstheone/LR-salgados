@@ -29,14 +29,16 @@ const db = new sqlite3.Database(dbPath, (err) => {
     }
 });
 
-const createTableQuery = 
+// Criar a tabela se não existir
+const createTableQuery = `
 CREATE TABLE IF NOT EXISTS feedbacks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     email TEXT NOT NULL,
     rating INTEGER NOT NULL,
     comment TEXT NOT NULL
-);;
+);
+`;
 
 db.run(createTableQuery, (err) => {
     if (err) {
@@ -44,6 +46,7 @@ db.run(createTableQuery, (err) => {
     }
 });
 
+// Rota para enviar feedback
 app.post('/submit-feedback', (req, res) => {
     console.log('Dados recebidos:', req.body);
     const { name, rating, comment, email } = req.body;
@@ -52,24 +55,27 @@ app.post('/submit-feedback', (req, res) => {
         return res.status(400).send('Todos os campos são obrigatórios.');
     }
 
-    const insertQuery = 
-INSERT INTO feedbacks (name, email, rating, comment)
-VALUES (?, ?, ?, ?);;
+    const insertQuery = `
+    INSERT INTO feedbacks (name, email, rating, comment)
+    VALUES (?, ?, ?, ?);
+    `;
 
     db.run(insertQuery, [name, email, rating, comment], (err) => {
         if (err) {
             console.error('Erro ao inserir feedback:', err.message);
             res.status(500).send('Erro ao salvar o feedback.');
         } else {
-            res.redirect('/index.html?comentario=sucesso'); // Redirecionamento atualizado
+            res.redirect('/index.html?comentario=sucesso');
         }
     });
 });
 
+// Rota para obter feedbacks
 app.get('/feedbacks', (req, res) => {
-    const selectQuery = 
-SELECT * FROM feedbacks
-ORDER BY id DESC;;
+    const selectQuery = `
+    SELECT * FROM feedbacks
+    ORDER BY id DESC;
+    `;
 
     db.all(selectQuery, [], (err, rows) => {
         if (err) {
@@ -81,15 +87,14 @@ ORDER BY id DESC;;
     });
 });
 
+// Servir arquivos estáticos do front-end
 app.use(express.static(path.join(__dirname, '../../front-end')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../../front-end', 'index.html'));
 });
 
-app.listen(PORT, () => {
-    console.log(Servidor rodando em http://localhost:${PORT});
-});
+// Rota para excluir um feedback
 app.delete('/feedbacks/:id', (req, res) => {
     const feedbackId = req.params.id;
     const userEmail = req.body.email;
@@ -101,11 +106,9 @@ app.delete('/feedbacks/:id', (req, res) => {
     let sql, params;
 
     if (userEmail === ADMIN_EMAIL) {
-        // Se o email for o de administrador, excluir qualquer comentário pelo ID
         sql = 'DELETE FROM feedbacks WHERE id = ?';
         params = [feedbackId];
     } else {
-        // Caso contrário, só excluir se o email coincidir
         sql = 'DELETE FROM feedbacks WHERE id = ? AND email = ?';
         params = [feedbackId, userEmail];
     }
@@ -123,4 +126,8 @@ app.delete('/feedbacks/:id', (req, res) => {
         res.json({ message: 'Comentário excluído com sucesso!' });
     });
 });
-O ChatGPT disse:
+
+// Iniciar o servidor
+app.listen(PORT, () => {
+    console.log(`Servidor rodando em http://localhost:${PORT}`);
+});
