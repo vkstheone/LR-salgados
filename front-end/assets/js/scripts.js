@@ -51,27 +51,9 @@ async function loadFeedbacks() {
 function showSuccessAlert() {
     let timerInterval;
     Swal.fire({
-        title: "Adicionando Comentário",
-        html: "Aguarde <span id='countdown'>3</span> segundos...",
+        title: "Avaliação adidionada com sucesso!",
         icon: 'success',
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: () => {
-            Swal.showLoading();
-            let timer = Swal.getPopup().querySelector("#countdown");
-            let timeLeft = Swal.getTimerLeft() / 1000;
-            timer.textContent = Math.ceil(timeLeft);
-            timerInterval = setInterval(() => {
-                timeLeft = Swal.getTimerLeft() / 1000;
-                timer.textContent = Math.ceil(timeLeft);
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                }
-            }, 1000);
-        },
-        willClose: () => {
-            clearInterval(timerInterval);
-        }
+       
     }).then(() => {
         history.replaceState(null, '', '/index.html');
     });
