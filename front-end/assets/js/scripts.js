@@ -1,8 +1,9 @@
+// scripts.js
 async function loadFeedbacks() {
     try {
-        const response = await fetch('http://localhost:3000/database/feedbacks'); // Rota do backend para obter os feedbacks
+        const response = await fetch('http://localhost:3000/feedbacks');
         if (!response.ok) {
-            throw new Error('Erro ao buscar feedbacks do servidor   .');
+            throw new Error('Erro ao buscar feedbacks do servidor.');
         }
 
         const feedbacks = await response.json();
@@ -13,10 +14,8 @@ async function loadFeedbacks() {
             return;
         }
 
-        // Limpa o conteúdo existente
-        testimonialsList.innerHTML = '';
+        testimonialsList.innerHTML = ''; // Limpa o conteúdo existente
 
-        // Adiciona os feedbacks dinamicamente
         feedbacks.forEach(feedback => {
             const feedbackItem = document.createElement('div');
             feedbackItem.classList.add('testimonial-item');
@@ -24,12 +23,21 @@ async function loadFeedbacks() {
             feedbackItem.innerHTML = `
                 <h3>${feedback.name}</h3>
                 <p class="rating">${'★'.repeat(feedback.rating)}${'☆'.repeat(5 - feedback.rating)}</p>
-                <p>'${feedback.comment}</p>
+                <p>${feedback.comment}</p>
                 <button class="delete-btn" data-id="${feedback.id}">Excluir Comentário</button>
             `;
-            
+
             testimonialsList.appendChild(feedbackItem);
         });
+
+        // Código de rolagem suave *após* carregar os feedbacks:
+        if (window.location.hash) {
+            const targetElement = document.querySelector(window.location.hash);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+                setTimeout(showSuccessAlert, 1000); // Aguarda a rolagem antes do alerta
+            }
+        }
     } catch (error) {
         Swal.fire({
             icon: 'error',
@@ -37,6 +45,36 @@ async function loadFeedbacks() {
             text: `Erro ao carregar feedbacks: ${error.message}`
         });
     }
+}
+
+// Função para exibir alerta após rolagem
+function showSuccessAlert() {
+    let timerInterval;
+    Swal.fire({
+        title: "Adicionando Comentário",
+        html: "Aguarde <span id='countdown'>3</span> segundos...",
+        icon: 'success',
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+            Swal.showLoading();
+            let timer = Swal.getPopup().querySelector("#countdown");
+            let timeLeft = Swal.getTimerLeft() / 1000;
+            timer.textContent = Math.ceil(timeLeft);
+            timerInterval = setInterval(() => {
+                timeLeft = Swal.getTimerLeft() / 1000;
+                timer.textContent = Math.ceil(timeLeft);
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                }
+            }, 1000);
+        },
+        willClose: () => {
+            clearInterval(timerInterval);
+        }
+    }).then(() => {
+        history.replaceState(null, '', '/index.html');
+    });
 }
 
 // Função para excluir um feedback
@@ -47,18 +85,14 @@ async function deleteFeedback(feedbackId, userEmail) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email: userEmail }) // Agora o email é enviado corretamente
+            body: JSON.stringify({ email: userEmail })
         });
 
         if (!response.ok) {
-            const errorData = await response.json(); // Captura a mensagem de erro do backend
+            const errorData = await response.json();
             throw new Error(errorData.message || 'Erro ao excluir feedback.');
         }
 
-        const result = await response.json();
-        console.log(result.message);
-
-        // Atualiza a lista de feedbacks
         loadFeedbacks();
         Swal.fire({
             icon: 'success',
@@ -74,13 +108,10 @@ async function deleteFeedback(feedbackId, userEmail) {
     }
 }
 
-
-
-// Adiciona eventos para os botões de exclusão
+// Delegação de eventos para excluir comentários
 document.addEventListener('click', (event) => {
     if (event.target.classList.contains('delete-btn')) {
         const feedbackId = event.target.getAttribute('data-id');
-
         Swal.fire({
             title: 'Digite seu email para confirmar a exclusão',
             input: 'email',
@@ -92,66 +123,22 @@ document.addEventListener('click', (event) => {
             preConfirm: (email) => {
                 if (!email) {
                     Swal.showValidationMessage('Por favor, insira um email válido.');
-                    return false; // Impede o fechamento do modal se o email estiver vazio
+                    return false;
                 }
                 return email;
             }
         }).then((result) => {
             if (result.isConfirmed && result.value) {
-                deleteFeedback(feedbackId, result.value); // Agora passando o email corretamente
+                deleteFeedback(feedbackId, result.value);
             }
         });
     }
 });
 
-// Aguarda o carregamento do DOM antes de executar
+// Chama loadFeedbacks ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM completamente carregado.");
-    loadFeedbacks(); // Carrega os feedbacks ao iniciar
-});
-
-// Função para carregar feedbacks
-async function loadFeedbacks() {
-    try {
-        //const response = await fetch('../../../back-end/database/feedbacks');// Rota do backend para obter os feedbacks
-        const response = await fetch('http://localhost:3000/feedbacks');
-
-        
-        if (!response.ok) {
-            throw new Error('Erro ao buscar feedbacks do servidor.');
-        }
-
-        const feedbacks = await response.json();
-        console.log('Feedbacks recebidos:', feedbacks); // Adicionando um log para verificar os dados
-
-        const testimonialsList = document.querySelector('.testimonials-list');
-        if (!testimonialsList) {
-            console.error("Elemento .testimonials-list não encontrado no DOM.");
-            return;
-        }
-
-        // Limpa o conteúdo existente
-        testimonialsList.innerHTML = '';
-
-        // Adiciona os feedbacks dinamicamente
-        feedbacks.forEach(feedback => {
-            const feedbackItem = document.createElement('div');
-            feedbackItem.classList.add('testimonial-item');
-
-            feedbackItem.innerHTML = `
-                <h3>${feedback.name}</h3>
-                <p class="rating">${'★'.repeat(feedback.rating)}${'☆'.repeat(5 - feedback.rating)}</p>
-                <p>${feedback.comment}</p>
-                <button class="delete-btn" data-id="${feedback.id}">Excluir Comentário</button>
-            `;
-            
-            testimonialsList.appendChild(feedbackItem);
-        });
-    } catch (error) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Erro!',
-            text: `Erro ao carregar feedbacks: ${error.message}`
-        });
+    loadFeedbacks();
+    if (new URLSearchParams(window.location.search).get('comentario') === 'sucesso') {
+        window.location.hash = 'testimonials';
     }
-}
+});
